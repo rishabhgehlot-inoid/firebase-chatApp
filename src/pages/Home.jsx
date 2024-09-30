@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { onValue, push, ref } from "firebase/database";
-import { auth, database } from "../firebase";
-import { onAuthStateChanged } from "firebase/auth";
+import { database } from "../firebase";
+// import { onAuthStateChanged } from "firebase/auth";
 const Home = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -16,15 +16,16 @@ const Home = () => {
   };
   const handleNewMessage = () => {
     try {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          console.log(user.phoneNumber);
-          setPhone(user.phoneNumber);
-        } else {
-          // User is signed out
-          // ...
-        }
-      });
+      // onAuthStateChanged(auth, (user) => {
+      //   if (user) {
+      //     console.log(user.phoneNumber);
+      //     setPhone(user.phoneNumber);
+      //   } else {
+      //     // User is signed out
+      //     // ...
+      //   }
+      // });
+
       // setMessages([...messages, newMessage]);
       writeUserData(phone, phone, newMessage);
       const starCountRef = ref(database, "chats/");
@@ -41,6 +42,7 @@ const Home = () => {
     }
   };
   useEffect(() => {
+    setPhone(localStorage.getItem("token"));
     const starCountRef = ref(database, "chats/");
     onValue(starCountRef, (snapshot) => {
       const data = snapshot.val();
@@ -53,19 +55,17 @@ const Home = () => {
     const messageData = {
       phone: phone,
       message: message,
-      timestamp: Date.now(), // Use timestamp to track when the message was sent
+      timestamp: Date.now(),
     };
 
-    // Get a reference to the chat room, and push a new message to it
     const messageRef = ref(database, `chats/`);
 
-    // Push adds a new unique key for each message
     push(messageRef, messageData);
   }
   return (
     <div className=" bg-slate-600 h-full pt-[90px] w-[100%] flex flex-col justify-between">
       <main
-        className=" w-full h-[800px] bg-orange-300 p-3 overflow-scroll"
+        className=" w-full h-[800px] bg-orange-300 p-3 overflow-scroll pb-[50px]"
         ref={messagesEndRef}
       >
         {messages.map((msg, index) => (
