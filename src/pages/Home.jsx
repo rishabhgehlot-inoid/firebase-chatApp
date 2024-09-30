@@ -65,7 +65,7 @@ const Home = () => {
   return (
     <div className=" bg-slate-600 h-full pt-[90px] w-[100%] flex flex-col justify-between">
       <main
-        className=" w-full h-[800px] bg-orange-300 p-3 overflow-scroll pb-[50px]"
+        className=" w-full h-[770px] bg-orange-300 p-3 overflow-y-scroll pb-[50px]"
         ref={messagesEndRef}
       >
         {messages.map((msg, index) => (
@@ -82,7 +82,7 @@ const Home = () => {
           </div>
         ))}
       </main>
-      <div className=" w-full bg-orange-600 p-5 flex gap-2 absolute bottom-0">
+      <div className=" w-full bg-orange-600 p-5 flex gap-2 ">
         <input
           type="text"
           className=" shadow-2xl border w-full p-3 rounded-lg outline-none"

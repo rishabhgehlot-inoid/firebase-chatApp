@@ -9,7 +9,12 @@ const SideBar = () => {
     const starCountRef = ref(database, "phones/");
     onValue(starCountRef, (snapshot) => {
       const data = snapshot.val();
-      setPhoneNumbers(Object.keys(data).map((key) => data[key]));
+      // setPhoneNumbers(Object.keys(data).map((key) => data[key].phone));
+      // console.log();
+      setPhoneNumbers([
+        ...new Set(Object.keys(data).map((key) => data[key].phone)),
+      ]);
+
       // console.log(phoneNumbers);
     });
   };
@@ -22,7 +27,7 @@ const SideBar = () => {
     <div className=" w-96 h-screen bg-orange-400 pt-[90px]">
       {phoneNumbers.map((num, index) => (
         <div className=" w-full shadow-xl" key={index} onClick={handleChange}>
-          <h3 className=" text-white font-semibold text-xl p-5">{num.phone}</h3>
+          <h3 className=" text-white font-semibold text-xl p-5">{num}</h3>
         </div>
       ))}
     </div>
