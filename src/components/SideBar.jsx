@@ -2,7 +2,8 @@ import { onValue, ref } from "firebase/database";
 import { database } from "../firebase";
 import { useEffect, useState } from "react";
 
-const SideBar = () => {
+// eslint-disable-next-line react/prop-types
+const SideBar = ({ setMatchNumber, matchNumber }) => {
   const [phoneNumbers, setPhoneNumbers] = useState([]);
 
   const handlePhoneNumbers = () => {
@@ -14,6 +15,7 @@ const SideBar = () => {
       setPhoneNumbers([
         ...new Set(Object.keys(data).map((key) => data[key].phone)),
       ]);
+      setMatchNumber(phoneNumbers[0]);
 
       // console.log(phoneNumbers);
     });
@@ -21,15 +23,23 @@ const SideBar = () => {
   useEffect(() => {
     handlePhoneNumbers();
   }, []);
-  const handleChange = () => {};
 
   return (
     <div className=" w-96 h-screen bg-orange-400 pt-[90px]">
-      {phoneNumbers.map((num, index) => (
-        <div className=" w-full shadow-xl" key={index} onClick={handleChange}>
-          <h3 className=" text-white font-semibold text-xl p-5">{num}</h3>
-        </div>
-      ))}
+      {phoneNumbers.map(
+        (num, index) =>
+          num !== localStorage.getItem("token") && (
+            <button
+              className={` w-full shadow-xl ${
+                num === matchNumber ? " bg-orange-600" : ""
+              }`}
+              key={index}
+              onClick={() => setMatchNumber(num)}
+            >
+              <h3 className=" text-white font-semibold text-xl p-5">{num}</h3>
+            </button>
+          )
+      )}
     </div>
   );
 };

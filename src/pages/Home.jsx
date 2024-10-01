@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { onValue, push, ref } from "firebase/database";
 import { database } from "../firebase";
 // import { onAuthStateChanged } from "firebase/auth";
+// eslint-disable-next-line react/prop-types
 const Home = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -27,16 +28,18 @@ const Home = () => {
       // });
 
       // setMessages([...messages, newMessage]);
-      writeUserData(phone, phone, newMessage);
-      const starCountRef = ref(database, "chats/");
-      onValue(starCountRef, (snapshot) => {
-        const data = snapshot.val();
-        setMessages(Object.keys(data).map((key) => data[key]));
-        console.log(Object.keys(data).map((key) => data[key]));
-      });
-      scrollToBottom();
-      console.log(messages);
-      setNewMessage("");
+      if (newMessage) {
+        writeUserData(phone, phone, newMessage);
+        const starCountRef = ref(database, "chats/");
+        onValue(starCountRef, (snapshot) => {
+          const data = snapshot.val();
+          setMessages(Object.keys(data).map((key) => data[key]));
+          console.log(Object.keys(data).map((key) => data[key]));
+        });
+        scrollToBottom();
+        console.log(messages);
+        setNewMessage("");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -55,6 +58,7 @@ const Home = () => {
     const messageData = {
       phone: phone,
       message: message,
+      // match: matchNumber,
       timestamp: Date.now(),
     };
 
@@ -82,7 +86,7 @@ const Home = () => {
           </div>
         ))}
       </main>
-      <div className=" w-full bg-orange-600 p-5 flex gap-2 ">
+      <div className=" w-full bg-orange-600 p-5 flex gap-2 sticky bottom-0">
         <input
           type="text"
           className=" shadow-2xl border w-full p-3 rounded-lg outline-none"

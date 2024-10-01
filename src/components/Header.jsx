@@ -19,12 +19,17 @@ const Header = () => {
     <header className=" w-screen h-[90px] bg-orange-500 p-5 text-white font-bold absolute left-0 right-0 top-0">
       <ul className=" flex gap-3 justify-between items-center px-5">
         <li className=" text-2xl">ChatApp</li>
-        <button
-          className=" p-3 outline-none shadow-orange-500 bg-orange-400 shadow-md rounded-lg font-bold"
-          onClick={handleSignOut}
-        >
-          Logout
-        </button>
+        <div>
+          <button className=" p-3 outline-none shadow-orange-500 bg-orange-400 shadow-md rounded-lg font-bold mx-1">
+            {localStorage.getItem("token")}
+          </button>
+          <button
+            className=" p-3 outline-none shadow-orange-500 bg-orange-400 shadow-md rounded-lg font-bold mx-1"
+            onClick={handleSignOut}
+          >
+            Logout
+          </button>
+        </div>
       </ul>
     </header>
   );
